@@ -32,7 +32,7 @@ IL parser, instruction list, 미쓰비시 래더, 지멘스 래더, PLC 로직 �
 ## 개발자 (Author)
 
 **김민준 (MinJun Kim)** — PLC 자동화 SW·HW 기업의 프론트엔드 개발자
-📫 kimmj21111@gmail.com · [GitHub](https://github.com/MinJunKimsdaads)
+📫 kimmj21111@gmail.com · m6827126@gmail.com · [GitHub](https://github.com/MinJunKimsdaads)
 
 ## 패치노트 (Changelog)
 
