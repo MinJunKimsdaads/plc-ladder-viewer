@@ -34,7 +34,18 @@ IL parser, instruction list, 미쓰비시 래더, 지멘스 래더, PLC 로직 �
 **김민준 (MinJun Kim)** — PLC 자동화 SW·HW 기업의 프론트엔드 개발자
 📫 kimmj21111@gmail.com · m6827126@gmail.com · [GitHub](https://github.com/MinJunKimsdaads)
 
+## 벤더별 가이드 (Vendor Guides)
+
+- [Mitsubishi 래더 뷰어 — GX Works3 CSV](https://ladder-view-demo.vercel.app/guides/mitsubishi-ladder-viewer.html)
+- [Siemens 래더 뷰어 — TIA Portal XML](https://ladder-view-demo.vercel.app/guides/siemens-ladder-viewer.html)
+- [Keyence 래더 뷰어 — KV STUDIO .mnm](https://ladder-view-demo.vercel.app/guides/keyence-ladder-viewer.html)
+- [LS Electric 래더 뷰어 — XG5000 .pra/.pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
+
 ## 패치노트 (Changelog)
+
+### 2026-08-20
+- **LS XGI(.pri) 지원** — 태그 기반 프로그램, TON 인스턴스, SET/RST 코일 확정
+- 벤더별 SEO 가이드 페이지 4종 추가
 
 ### 2026-08-19
 - **LS Electric (XG5000) 지원** — `.pra` 바이너리 포맷 분석, 접점/코일/FB/분기 렌더링 (베타)
