@@ -1,3 +1,4 @@
+
 # Integration PLC Logic View — PLC Ladder Viewer & Simulator
 
 **🔗 Live: https://ladder-view-demo.vercel.app/**
@@ -10,10 +11,10 @@ A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor
 
 | 벤더 | 도구 | 포맷 |
 |---|---|---|
-| Mitsubishi | GX Works3 | IL CSV · 디바이스 코멘트 CSV · FB(Function Block) |
+| Mitsubishi | GX Works3 | **프로젝트 파일 `.gx3` 직접 임포트** · IL CSV · 디바이스 코멘트 CSV · FB(Function Block) |
 | Keyence | KV STUDIO | 니모닉 `.mnm` |
 | Siemens | TIA Portal | TIA Openness XML (FB/OB/DB/PLC Tags) |
-| LS Electric | XG5000 | 프로그램 `.pra` (베타) |
+| LS Electric | XG5000 | **프로젝트 파일 `.xgwx` 직접 임포트** · 프로그램 `.pra`/`.pri` (베타) |
 
 ## 주요 기능 (Features)
 
@@ -42,6 +43,11 @@ IL parser, instruction list, 미쓰비시 래더, 지멘스 래더, PLC 로직 �
 - [LS Electric 래더 뷰어 — XG5000 .pra/.pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
 
 ## 패치노트 (Changelog)
+
+### 2026-09-08
+- **프로젝트 파일 직접 임포트** — 내보내기 없이 원본 프로젝트 파일을 바로 열기
+  - Mitsubishi **GX Works3 `.gx3`**: ZIP+SQLite 컨테이너 해석, 라벨·FB 호출·비교 접점 렌더 (브라우저 sql.js)
+  - LS Electric **XG5000 `.xgwx`**: gzip+bzip2 중첩 압축 해석, 프로그램별 래더 로드
 
 ### 2026-08-20
 - **LS XGI(.pri) 지원** — 태그 기반 프로그램, TON 인스턴스, SET/RST 코일 확정
