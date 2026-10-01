@@ -1,4 +1,3 @@
-
 # Integration PLC Logic View — PLC Ladder Viewer & Simulator
 
 **🔗 Live: https://ladder-view-demo.vercel.app/**
@@ -17,6 +16,31 @@ A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor
 | LS Electric | XG5000 | **프로젝트 파일 `.xgwx` 직접 임포트** · 프로그램 `.pra`(XGK) / `.pri`(XGI) (베타) | ✅ | — |
 
 > 통전 시뮬레이션·자동 검수·타임차트·인터록 분석은 현재 **Mitsubishi(GX Works3)** 래더에서 동작합니다. 다른 벤더는 렌더·FB 시각화 중심이며, Siemens SCL 네트워크는 플레이스홀더로 표시됩니다.
+
+## 검증 범위 (Verification Status)
+
+어디까지 확인됐고 어디부터 확인되지 않았는지 적어 둡니다. 실제 설비에 쓰기 전에는
+벤더 툴에서 반드시 교차 확인하세요.
+
+| 포맷 | 테스트 코퍼스 | 파싱 | 렌더 | 시뮬 | 남은 것 |
+|---|---|:---:|:---:|:---:|---|
+| Mitsubishi IL CSV | 실파일 5본 | 전수 | ✅ | ✅ | — |
+| Mitsubishi `.gx3` | MELFA 공식 샘플 875블록 | 전수 | ✅ | ✅ | 일부 디바이스 코드 미확정 |
+| Keyence `.mnm` | 20본 | 전수 | ✅ | — | 태그 기반이라 시뮬 미지원 |
+| Siemens Openness XML | 43본 (래더 7본 + 자산 36본) | 전수 | ✅ | — | SCL 네트워크는 플레이스홀더 |
+| Siemens 프로젝트 파일 | — | **미지원** | — | — | `.zap` 컨테이너는 열리나 래더 추출 미해결 |
+| LS `.pra` (XGK) | 30본 | 전수 | ✅ | — | — |
+| LS `.pri` (XGI) | 베타 | 부분 | ✅ | — | 일부 코일 코드 미확정 |
+| LS `.xgwx` | 베타 | 부분 | ✅ | — | Symbols → 코멘트 연동 미구현 |
+
+**자동 검증.** 샘플 99본(룽 10,468개)을 매번 전수 파싱하고, 같은 사실을 서로 다른
+경로로 구해 대조합니다. 명령 정의, 출력 분류, IL 라운드트립, 코일 집계, 엔진 실행을
+교차 확인합니다. 시뮬 엔진 단위 테스트 187개와 화면 시각 회귀 13장이 함께 돕니다.
+
+**시뮬레이션의 한계.** 명령 의미론은 MELSEC 매뉴얼의 피연산자 표와 대조했지만
+**실제 PLC에서 돌려 확인한 것은 아닙니다.** 반복 실행(FOR/NEXT), 서브루틴 분기(CALL),
+연산 에러 플래그는 구현하지 않았습니다. 미구현 명령은 추측으로 실행하지 않고
+"미지원"으로 보고합니다.
 
 ## 주요 기능 (Features)
 
@@ -46,6 +70,16 @@ gx3 viewer, xgwx viewer, TIA Openness XML, IL parser, instruction list, 미쓰�
 - [LS Electric 래더 뷰어 — XG5000 .xgwx / .pra / .pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
 
 ## 패치노트 (Changelog)
+
+### 2026-10-01
+- **시뮬레이션 엔진 고도화** — 명령어 레지스트리로 통합, 32비트/실수/문자열 값 모델 분리,
+  마스터 컨트롤(MC/MCR) 구현, 타이머 현재값을 타이머 단위로 수정
+- **래더 스타일 개편** — GX Works3 인쇄물에 가까운 흑백 도면. 통전은 색과 굵기 두 축으로
+  표시해 흑백 인쇄와 색각 이상에서도 구분됩니다
+- **"샘플 바로 체험"이 실제로 돕니다** — 클릭 한 번으로 타이머·카운터가 동작하는 래더가
+  통전과 함께 재생됩니다
+- 파서 수정 — 일부 명령이 앞 명령에 흡수되던 문제, 디바이스 분류 오류 2건
+- 검증 범위 표 공개
 
 ### 2026-09-17
 - **GX Works3 `.gx3` 임포트 고도화**
