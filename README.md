@@ -57,6 +57,7 @@ A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor
 - 🧪 **시나리오 테스트** — 입력·대기·기대값을 JSON 으로 적어 돌리고, 실패하면 단계·스캔·시간을 알려 줍니다. 커버리지(지나간 렁·접점)도 보여 줍니다
 - 🏭 **가상 설비 · 간이 HMI** — 실린더·탱크·지연 모델과 버튼·램프로 래더를 움직여 봅니다
 - ⏪ **되감기** — 타임차트에서 고른 순간으로 시뮬을 정확히 되돌립니다
+- 🖥️ **HMI 화면 만들기 (WinCC Unified)** — Siemens 화면에서 도형·그림·페이스플레이트를 끌어다 놓아 화면을 그리고 JSON 으로 내보냅니다. [PLC-Assistant TIA 애드인](https://github.com/MinJunKimsdaads/plc-assistant-tool-release)으로 TIA Portal 에 넣습니다
 - 💬 **분석 도우미** — "언제 켜지나요?" · "지금 왜 이 상태인가요?" · 이중 코일 · 외부 입력을 프로그램 색인으로 답합니다(AI 아님). 답의 렁 칩을 누르면 그 렁으로 갑니다
 - ✅ **자동 검수 (Mitsubishi)** — 이중코일, 태그 표준화, 임시접점, 실 I/O 검사
 - 📊 타임차트(커서 Δt · 확대 · CSV/PNG) · 대시보드 · 인터록 분석
@@ -81,6 +82,13 @@ TIA Openness XML, IL parser, instruction list, 미쓰비시 래더, 지멘스 �
 - [LS Electric 래더 뷰어 — XG5000 .pra / .pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
 
 ## 패치노트 (Changelog)
+
+### 2026-11-19
+- **HMI 화면 만들기 (WinCC Unified)** — Siemens 를 고르고 헤더의 *HMI 화면 만들기* 에서 모델(Unified Comfort ·
+  Comfort PRO · Basic · PC RT)을 정하고, 도형·그림·페이스플레이트를 끌어다 놓아 화면을 그립니다. 이벤트 스크립트와
+  태그 연결도 적을 수 있습니다. 내보낸 `<이름>.screen.json` 은
+  [PLC-Assistant TIA 애드인 0.2.0](https://github.com/MinJunKimsdaads/plc-assistant-tool-release/releases/tag/tia-addin-v0.2.0)
+  으로 넣습니다 — HMI 장치 노드 우클릭 › Add-Ins › PLC-Assistant › HMI 화면 가져오기, 넣을 폴더는 뜨는 창에서 고릅니다
 
 ### 2026-11-18
 - **분석 도우미의 렁 칩이 그 렁으로 갑니다** — 파일을 둘 이상 올렸거나 시뮬("전체" 보기)
