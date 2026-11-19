@@ -2,20 +2,20 @@
 
 **🔗 Live: https://ladder-view-demo.vercel.app/**
 
-브라우저에서 바로 쓰는 **PLC 래더 다이어그램 뷰어 & 시뮬레이터**입니다. 설치 없이 각 벤더 툴의 프로젝트 파일이나 내보내기 파일을 업로드하면 래더를 바로 렌더링하고 FB를 시각화하며, Mitsubishi 래더는 통전 시뮬레이션·자동 검수·인터록 분석까지 지원합니다.
+브라우저에서 바로 쓰는 **PLC 래더 다이어그램 뷰어 & 시뮬레이터**입니다. 설치 없이 각 벤더 툴의 프로젝트 파일이나 내보내기 파일을 업로드하면 래더를 바로 렌더링하고 FB를 시각화하며, Mitsubishi 래더는 통전 시뮬레이션·시나리오 테스트·자동 검수까지 지원합니다(LS XGK 시뮬은 베타).
 
-A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor project or export files — no installation required. Ladder rendering for Mitsubishi, Keyence, Siemens and LS Electric; soft-scan simulation and inspection for Mitsubishi GX Works3.
+A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor export files — no installation required. Ladder rendering for Mitsubishi, Keyence, Siemens and LS Electric; soft-scan simulation, scenario tests and inspection for Mitsubishi GX Works3 (LS XGK simulation in beta).
 
 ## 지원 벤더 (Supported Vendors)
 
 | 벤더 | 도구 | 포맷 | 래더 렌더 | 통전 시뮬 |
 |---|---|---|:---:|:---:|
-| Mitsubishi | GX Works3 | **프로젝트 파일 `.gx3` 직접 임포트** · IL CSV · 디바이스 코멘트 CSV · FB(Function Block) | ✅ | ✅ |
+| Mitsubishi | GX Works3 | IL CSV · 디바이스 코멘트 CSV · FB(Function Block) | ✅ | ✅ |
 | Keyence | KV STUDIO | 니모닉 `.mnm` | ✅ | — |
-| Siemens | TIA Portal | TIA Openness XML — FB/OB 래더(LAD) + DB/UDT/PLC Tags 자산 뷰 | ✅ | — |
-| LS Electric | XG5000 | **프로젝트 파일 `.xgwx` 직접 임포트** · 프로그램 `.pra`(XGK) / `.pri`(XGI) (베타) | ✅ | — |
+| Siemens | TIA Portal | TIA Openness XML — FB/OB 래더 + PLC 태그/DB/UDT 자산 뷰 | ✅ | — |
+| LS Electric | XG5000 | 프로그램 내보내기 `.pra`(XGK) / `.pri`(XGI) (베타) | ✅ | XGK 베타 |
 
-> 통전 시뮬레이션·자동 검수·타임차트·인터록 분석은 현재 **Mitsubishi(GX Works3)** 래더에서 동작합니다. 다른 벤더는 렌더·FB 시각화 중심이며, Siemens SCL 네트워크는 플레이스홀더로 표시됩니다.
+> 통전 시뮬레이션·자동 검수·타임차트·시나리오 테스트는 **Mitsubishi(GX Works3)** 래더에서 동작하고, **LS XGK(`.pra`)** 는 베타로 돌아갑니다. 다른 벤더는 렌더·FB 시각화 중심이며, Siemens SCL 네트워크는 플레이스홀더로 표시됩니다.
 
 ## 검증 범위 (Verification Status)
 
@@ -25,37 +25,48 @@ A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor
 | 포맷 | 테스트 코퍼스 | 파싱 | 렌더 | 시뮬 | 남은 것 |
 |---|---|:---:|:---:|:---:|---|
 | Mitsubishi IL CSV | 실파일 5본 | 전수 | ✅ | ✅ | — |
-| Mitsubishi `.gx3` | MELFA 공식 샘플 875블록 | 전수 | ✅ | ✅ | 일부 디바이스 코드 미확정 |
-| Keyence `.mnm` | 20본 | 전수 | ✅ | — | 태그 기반이라 시뮬 미지원 |
+| Mitsubishi `.gx3` ※ | MELFA 공식 샘플 + 실샘플 2본 (3본, 룽 1,917) | 전수 | ✅ | ✅ | POU 이름 16/16 복원(세 경로 대조). 실행 타입(스캔·고정 주기·이벤트·대기)은 미해석. 일부 디바이스 코드 미확정 |
+| Keyence `.mnm` | 20본 | 전수 | ✅ | — | 태그 기반이라 시뮬 미지원. 위치결정 유닛 함수(`UnitBufMemRead` 등)와 `FBEXEC` 의 FB 는 이름까지만 표시 — 동작·핀은 미해석(20본에서 58줄) |
 | Siemens Openness XML | 43본 (래더 7본 + 자산 36본) | 전수 | ✅ | — | SCL 네트워크는 플레이스홀더 |
-| Siemens 프로젝트 파일 | — | **미지원** | — | — | `.zap` 컨테이너는 열리나 래더 추출 미해결 |
-| LS `.pra` (XGK) | 30본 | 전수 | ✅ | — | — |
+| Siemens 프로젝트 파일 ※ | `.zap19`/`.zap21` | 래더 + 자산 | ✅ | — | 객체 이름 39,907건·피연산자 102,729건을 지멘스 변환기 출력과 전수 대조(불일치 0). 노하우 보호 블록과 SCL 네트워크는 래더로 못 그림. 블록 호출은 박스로 그리되 핀은 안 그림(프로젝트 파일에 핀 정보가 없음) |
+| LS `.pra` (XGK) | 30본 | 전수 | ✅ | 베타 | 시뮬은 XGK 매뉴얼의 타이머·카운터·F 플래그 등 일부 명령만. 실기 대조 안 함 |
 | LS `.pri` (XGI) | 베타 | 부분 | ✅ | — | 일부 코일 코드 미확정 |
-| LS `.xgwx` | 베타 | 부분 | ✅ | — | Symbols → 코멘트 연동 미구현 |
+| LS `.xgwx` ※ | 2본 (룽 127) | 부분 | ✅ | — | 프로젝트 ▸ PLC ▸ 태스크 ▸ 프로그램 트리 복원(샘플 1본). Symbols → 코멘트 연동 미구현 |
 
-**자동 검증.** 샘플 99본(룽 10,468개)을 매번 전수 파싱하고, 같은 사실을 서로 다른
-경로로 구해 대조합니다. 명령 정의, 출력 분류, IL 라운드트립, 코일 집계, 엔진 실행을
-교차 확인합니다. 시뮬 엔진 단위 테스트 187개와 화면 시각 회귀 13장이 함께 돕니다.
+**자동 검증.** 레포의 샘플 147본을 매번 전부 파싱하고 400스캔씩 시뮬해, 파싱 결과와
+시뮬 상태가 전과 같은지 해시로 대조합니다(골든 테스트). 같은 사실을 서로 다른 경로로
+구해 대조하는 검사(명령 정의, 출력 분류, IL 라운드트립, 코일 집계, 엔진 실행)도 함께
+돕니다. 시뮬 엔진 테스트 829개와 화면 시각 회귀 17장이 바뀔 때마다 돕니다.
 
 **시뮬레이션의 한계.** 명령 의미론은 MELSEC 매뉴얼의 피연산자 표와 대조했지만
-**실제 PLC에서 돌려 확인한 것은 아닙니다.** 반복 실행(FOR/NEXT), 서브루틴 분기(CALL),
-연산 에러 플래그는 구현하지 않았습니다. 미구현 명령은 추측으로 실행하지 않고
-"미지원"으로 보고합니다.
+**실제 PLC에서 돌려 확인한 것은 아닙니다.** 반복 실행(FOR/NEXT)과 연산 에러(SM0/SD0)는
+구현했고, 서브루틴 분기(CALL)와 점프(CJ/GOEND)는 아직입니다. 미구현 명령은 추측으로
+실행하지 않고 "미지원"으로 보고합니다. 시뮬 시간은 화면 속도와 무관하게
+`스캔 수 × 스캔 시간` 으로 흐르므로, 같은 입력이면 어느 PC 에서나 같은 결과가 나옵니다.
+
+> ※ 표시한 세 줄은 **라이브러리에서만** 쓸 수 있습니다. 배포 사이트는 벤더
+> 프로젝트 파일 업로드를 받지 않습니다 — 각 설계 툴이 내보낸 파일만 받습니다.
+> 파서는 그대로 있고 `npm run verify:vendors` 가 계속 전수 검증합니다.
 
 ## 주요 기능 (Features)
 
-- 🗂️ **프로젝트 파일 직접 임포트** — GX Works3 `.gx3`, XG5000 `.xgwx`를 내보내기 없이 바로 열기 (디바이스 코멘트 자동 연동, POU ▸ 섹션 트리)
+- 🗂️ **내보내기 파일만 받습니다** — 벤더 프로젝트 파일(`.gx3`/`.zap`/`.xgwx`)은 업로드를 받지 않습니다. 각 설계 툴에서 내보낸 CSV·XML·니모닉·프로그램 파일을 올려 주세요
 - 🧩 **FB 시각화** — GX Works3 FB 인스턴스, TIA Call, XG5000 XGI FB 인스턴스를 핀 블록으로 렌더링
-- ⚡ **통전 시뮬레이션 (Mitsubishi)** — 소프트 스캔 엔진으로 접점·코일 통전, 타이머/카운터 실시간 확인
+- 🎨 **그 도구의 눈으로 그리는 래더** — 지멘스는 TIA Portal 화풍(네트워크 접기·코멘트·블록 인터페이스), 키엔스 FB 는 핀 이름이 붙은 박스
+- ⚡ **통전 시뮬레이션 (Mitsubishi · LS XGK 베타)** — 고정 스캔 시계, RUN/STOP · 래치, 타이머/카운터 실시간 확인
+- 🧪 **시나리오 테스트** — 입력·대기·기대값을 JSON 으로 적어 돌리고, 실패하면 단계·스캔·시간을 알려 줍니다. 커버리지(지나간 렁·접점)도 보여 줍니다
+- 🏭 **가상 설비 · 간이 HMI** — 실린더·탱크·지연 모델과 버튼·램프로 래더를 움직여 봅니다
+- ⏪ **되감기** — 타임차트에서 고른 순간으로 시뮬을 정확히 되돌립니다
+- 💬 **분석 도우미** — "언제 켜지나요?" · "지금 왜 이 상태인가요?" · 이중 코일 · 외부 입력을 프로그램 색인으로 답합니다(AI 아님). 답의 렁 칩을 누르면 그 렁으로 갑니다
 - ✅ **자동 검수 (Mitsubishi)** — 이중코일, 태그 표준화, 임시접점, 실 I/O 검사
-- 📊 타임차트 · 대시보드 · 인터록 분석 (시뮬레이션 기반)
+- 📊 타임차트(커서 Δt · 확대 · CSV/PNG) · 대시보드 · 인터록 분석
 - 📱 모바일 반응형 · 🌐 한국어/영어 · 라이트/다크 테마
 
 ## 키워드
 
 PLC ladder viewer, ladder diagram, ladder logic simulator, 래더 뷰어, 래더 시뮬레이터,
 GX Works3, KV STUDIO, TIA Portal, XG5000, Mitsubishi PLC, Keyence PLC, Siemens PLC, LS Electric PLC,
-gx3 viewer, xgwx viewer, TIA Openness XML, IL parser, instruction list, 미쓰비시 래더, 지멘스 래더, PLC 로직 뷰어
+TIA Openness XML, IL parser, instruction list, 미쓰비시 래더, 지멘스 래더, PLC 로직 뷰어
 
 ## 개발자 (Author)
 
@@ -64,12 +75,102 @@ gx3 viewer, xgwx viewer, TIA Openness XML, IL parser, instruction list, 미쓰�
 
 ## 벤더별 가이드 (Vendor Guides)
 
-- [Mitsubishi 래더 뷰어 — GX Works3 .gx3 / CSV](https://ladder-view-demo.vercel.app/guides/mitsubishi-ladder-viewer.html)
+- [Mitsubishi 래더 뷰어 — GX Works3 IL CSV](https://ladder-view-demo.vercel.app/guides/mitsubishi-ladder-viewer.html)
 - [Siemens 래더 뷰어 — TIA Portal XML](https://ladder-view-demo.vercel.app/guides/siemens-ladder-viewer.html)
 - [Keyence 래더 뷰어 — KV STUDIO .mnm](https://ladder-view-demo.vercel.app/guides/keyence-ladder-viewer.html)
-- [LS Electric 래더 뷰어 — XG5000 .xgwx / .pra / .pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
+- [LS Electric 래더 뷰어 — XG5000 .pra / .pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
 
 ## 패치노트 (Changelog)
+
+### 2026-11-18
+- **분석 도우미의 렁 칩이 그 렁으로 갑니다** — 파일을 둘 이상 올렸거나 시뮬("전체" 보기)
+  중일 때 칩을 눌러도 다른 곳으로 가던 문제를 고쳤습니다
+- 프로그램이 여럿이면 칩 앞에 프로그램 이름이 붙습니다 (`MAIN · 1렁 OUT`)
+- 비교 접점을 "D0 켜짐" 이 아니라 식(`D0 = K60`)으로 말합니다
+
+### 2026-11-11
+- **시나리오 커버리지** — 테스트를 돌리면 지나간 출력·접점·렁의 비율과 한 번도 안 지나간
+  곳 목록이 나옵니다. 누르면 그 렁으로 갑니다
+- 분석 패널을 크게 띄워 볼 수 있습니다
+
+### 2026-11-09
+- **시뮬레이션 고도화**
+  - **고정 스캔 시계** — 시뮬 시간 = 스캔 수 × 스캔 시간(기본 10ms). PC·배속·탭 상태와
+    상관없이 같은 결과가 나옵니다. 스텝 단위는 1스캔 / 0.1초 / 1초
+  - **타임차트 개편** — 커서 A/B 사이 Δt, 확대·이동·따라가기, 차트에서 감시 추가·빼기,
+    CSV·PNG 내보내기
+  - **시나리오 테스트** — 입력·대기·기대값을 JSON 으로 적어 돌립니다("테스트" 탭).
+    실패하면 단계·스캔·시간을 알려 주고, 지금 동작으로 초안을 만들 수 있습니다
+  - **RUN/STOP · 래치** — STOP 버튼, Reset 은 CPU 리셋(래치 유지), STOP→RUN 출력 모드·래치
+    범위 설정 (iQ-R CPU 매뉴얼 근거)
+  - **가상 설비 · 간이 HMI** — 지연·실린더·탱크 모델과 버튼·램프("설비 · HMI" 탭)
+  - **되감기** — 고른 순간으로 정확히 되돌립니다(체크포인트 + 재실행)
+  - 분석 도우미 **"지금 왜 이 상태인가요?"** — 마지막 스캔에서 코일을 막은 접점·지나간 접점
+  - 스캔이 2.6배 빨라졌습니다 (1,173렁 5.6 → 2.1ms)
+- **LS XGK(`.pra`) 시뮬레이션 베타** — 주소 방언(`M01207` = M 워드 0120 의 비트 7),
+  TON/TOFF/TMR/TMON/TRTG · CTU/CTD/CTUD/CTR · F 플래그 등 (XGK 매뉴얼 근거)
+- 고친 것: 블록을 옮기면 시뮬이 0초로 돌아가던 문제, X/Y/B/W 두 자리 이상 주소를 다른
+  디바이스로 찾던 색인 버그(이중 코일·쓰임·외부 입력 답이 틀릴 수 있었음)
+
+### 2026-11-05
+- **분석 도우미(오른쪽 아래 챗봇)** — 추천 질문을 고르고 주소·코멘트·이름을 넣으면
+  프로그램 색인으로 답합니다. AI 가 아니라서 답이 하나로 정해지고, 모르면 모른다고 합니다.
+  언제 켜지나 / 언제 꺼지나 / 어디서 쓰나 / 외부 입력 / 이중 코일. 한국어·영어
+  - 10-29 에 사이드바에 넣었던 "디바이스 찾기" 는 여기로 합쳤습니다
+- **플랫폼 디자인 정돈** — 틸 강조색, Pretendard, 아이콘 한 벌. 래더 그림은 그대로입니다
+- 화면의 rung 한국어 표기를 "렁" 으로 통일
+
+### 2026-10-21
+- 래더 이름표 크기가 이름 길이에 따라 줄던 것을 없앴습니다 — 한 렁 안에서 크기가 섞였습니다
+- 긴 태그 이름(`CoordChgCmpCode`)이 단어 한가운데서 잘리지 않고 낙타표기 경계에서 접힙니다
+
+### 2026-10-19
+- **키엔스 FB 박스** — `FUN UnitBufMemWrite #1 #512 #0` 을 KV STUDIO 처럼 핀마다 한 줄인
+  박스로 그립니다. 핀 이름을 모르는 함수는 역할 이름으로 구분해 표시합니다
+
+### 2026-10-14 ~ 10-15
+- **지멘스 래더를 TIA Portal 화풍으로** — 네트워크 접기(하나씩 / 전부), 네트워크 코멘트,
+  블록 인터페이스 표, 명령 박스·세트/리셋 코일, ENO 로 이어진 박스를 가로로 나란히
+
+### 2026-10-13
+- **배포 사이트는 내보내기 파일만 받습니다** — 벤더 프로젝트 파일(`.gx3`/`.zap`/`.xgwx`)
+  업로드를 닫았습니다. 파서는 라이브러리에 남아 계속 검증됩니다
+- (라이브러리) 7z 로 저장된 `.gx3` 도 엽니다
+
+### 2026-10-12
+- **지멘스 블록·DB·UDT 의 설명(코멘트)** 이 트리 툴팁과 자산 화면에 뜹니다
+  (실파일 2,807건 읽고 실패 0 · 변환기 출력과 109/109 대조)
+- 키엔스 `.mnm` 의 응용명령이 `FUN` 대신 **진짜 이름**(`UnitBufMemRead`·`TON`)으로
+  보입니다. 동작과 핀은 여전히 모르는 명령으로 표시합니다
+- **다크 모드가 기본**입니다 (한 번 고르면 그 선택을 기억합니다)
+- 다크에서 TIA 아카이브·자산 표의 글자가 바탕에 묻히던 문제 해결
+- `.zap` 화면 정리 — 사용법 안내는 빼고, 왼쪽 트리에서 `(프로젝트 밖)` 가지를
+  감췄습니다 (라이브러리 시스템 타입 등, 실프로젝트에서 5,280개)
+
+### 2026-10-09
+- **지멘스 블록 호출(`CRef`) 렌더링** — 블록 호출만 든 네트워크가 빈 화면으로
+  뜨던 문제를 고쳤습니다. 불리는 블록과 인스턴스가 박스로 나옵니다
+- **PLC 태그 코멘트** 표시 — 비어 있던 칸입니다 (DB 시작값은 아직)
+- **미쓰비시 `.gx3` POU 실명 복원** — 프로그램·FB 이름을 프로젝트 파일에서 직접
+  읽습니다. 전에는 FB 만 실명이고 프로그램은 섹션 제목으로 떴습니다 (샘플 16/16)
+- 왼쪽 트리가 GX Works3 내비처럼 갈립니다 — 파일 ▸ (프로그램 | FB/FUN) ▸ POU ▸ 섹션
+- **LS `.xgwx` 도 XG5000 내비처럼** — 프로젝트 ▸ PLC ▸ 태스크 ▸ 프로그램
+
+### 2026-10-08
+- **TIA 프로젝트 파일(`.zap`)에서 래더를 바로** — TIA Portal 도 Openness 내보내기도
+  필요 없습니다. 블록 목록이 뜨고, 블록을 누르면 그 블록의 래더가 열립니다.
+  PLC 태그 테이블·DB·UDT 도 같이 보입니다
+  - 객체 이름 39,907건과 피연산자 102,729건을 지멘스 변환기 출력과 전수 대조 — 불일치 0건
+  - 노하우 보호(암호화) 블록과 SCL 네트워크는 래더로 그릴 수 없습니다. 블록을 열면
+    몇 개가 어떤 이유로 빠졌는지 알려 드립니다
+- **왼쪽 목록이 벤더 도구의 워킹트리** — "EM 목록" 이 프로젝트 목록이 되었습니다.
+  `.zap` 은 TIA Portal 내비게이션과 같은 계층(프로젝트 → 장치 → 컨트롤러 → 폴더 →
+  블록)으로, 블록 번호(`OB1`·`FB1002`·`DB3`)까지 그대로 나옵니다
+- 프로젝트를 올리는 동안 **분석 진행 막대** — 7단계로 어디까지 왔는지 보여 줍니다
+
+### 2026-10-07
+- **지멘스 엣지 접점(P/N 접점) 지원** — 읽지 못해 조건이 래더에서 빠지던 문제 해결.
+  N_TRIG(하강 엣지)을 상승 엣지로 처리하던 오류도 정정
 
 ### 2026-10-01
 - **시뮬레이션 엔진 고도화** — 명령어 레지스트리로 통합, 32비트/실수/문자열 값 모델 분리,
@@ -111,7 +212,7 @@ gx3 viewer, xgwx viewer, TIA Openness XML, IL parser, instruction list, 미쓰�
 - IL Emitter — IR→IL 역변환 + 라운드트립 검증
 
 ### 2026-08-14
-- Siemens TIA Portal 지원 — Openness XML 파싱, FB/OB 래더 + DB/UDT/태그 자산 뷰
+- Siemens TIA Portal 지원 — `.zap` 프로젝트 파일 직접 임포트(블록 목록 + 래더), Openness XML 파싱, FB/OB 래더 + DB/UDT/태그 자산 뷰
 - SEO 및 Google Search Console 등록
 
 ### 2026-08-13
