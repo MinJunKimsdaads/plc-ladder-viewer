@@ -36,7 +36,7 @@ A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor
 **자동 검증.** 레포의 샘플 147본을 매번 전부 파싱하고 400스캔씩 시뮬해, 파싱 결과와
 시뮬 상태가 전과 같은지 해시로 대조합니다(골든 테스트). 같은 사실을 서로 다른 경로로
 구해 대조하는 검사(명령 정의, 출력 분류, IL 라운드트립, 코일 집계, 엔진 실행)도 함께
-돕니다. 시뮬 엔진 테스트 829개와 화면 시각 회귀 17장이 바뀔 때마다 돕니다.
+돕니다. 시뮬 엔진 테스트 846개와 화면 시각 회귀 17장이 바뀔 때마다 돕니다.
 
 **시뮬레이션의 한계.** 명령 의미론은 MELSEC 매뉴얼의 피연산자 표와 대조했지만
 **실제 PLC에서 돌려 확인한 것은 아닙니다.** 반복 실행(FOR/NEXT)과 연산 에러(SM0/SD0)는
@@ -59,6 +59,7 @@ A free, browser-based **PLC ladder diagram viewer and simulator**. Upload vendor
 - ⏪ **되감기** — 타임차트에서 고른 순간으로 시뮬을 정확히 되돌립니다
 - 🖥️ **HMI 화면 만들기 (WinCC Unified)** — Siemens 화면에서 도형·그림·페이스플레이트를 끌어다 놓아 화면을 그리고 JSON 으로 내보냅니다. [PLC-Assistant TIA 애드인](https://github.com/MinJunKimsdaads/plc-assistant-tool-release)으로 TIA Portal 에 넣습니다
 - 💬 **분석 도우미** — "언제 켜지나요?" · "지금 왜 이 상태인가요?" · 이중 코일 · 외부 입력을 프로그램 색인으로 답합니다(AI 아님). 답의 렁 칩을 누르면 그 렁으로 갑니다
+- 🗺️ **주소 맵 (4개 벤더)** — 올린 프로그램 전체가 어느 주소를 쓰는지 격자와 표로 봅니다. 칸마다 코일·조건·명령 중 어디에 쓰였는지 색으로 보이고, 빈 칸이 남는 자리입니다. 렁 칩을 누르면 그 렁으로 갑니다
 - ✅ **자동 검수 (Mitsubishi)** — 이중코일, 태그 표준화, 임시접점, 실 I/O 검사
 - 📊 타임차트(커서 Δt · 확대 · CSV/PNG) · 대시보드 · 인터록 분석
 - 📱 모바일 반응형 · 🌐 한국어/영어 · 라이트/다크 테마
@@ -82,6 +83,15 @@ TIA Openness XML, IL parser, instruction list, 미쓰비시 래더, 지멘스 �
 - [LS Electric 래더 뷰어 — XG5000 .pra / .pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
 
 ## 패치노트 (Changelog)
+
+### 2026-11-23
+- **주소 맵** — 래더 제목 줄 오른쪽 *주소 맵* 에서 엽니다. Mitsubishi · Keyence · Siemens · LS 모두 됩니다
+  - **격자**: 영역(X · M · D, P · M · T, %I · %Q, R · MR · DM …)마다 칸을 깔고 쓰인 칸을 칠합니다 —
+    코일+조건 / 코일만(읽는 곳 없음) / 조건만(켜는 곳 없음) / 명령 피연산자만. 안 쓰는 행은 접어 줄 수로 보여 줍니다
+  - **표**: 주소 · 코멘트 · 코일/조건/명령 수 · 쓰인 렁. 찾기와 거르기(코일 없음 · 조건 없음 · OUT 코일 2곳 이상)
+  - 주소 문법은 벤더마다 읽습니다 — LS `M01207` 은 M 워드 0120 의 비트 7, 키엔스 `MR1005` 는 MR 채널 10 의 비트 05, 미쓰비시 `K4M0` 은 M0~M15
+  - 이름으로 쓴 변수(지멘스 `#Enable`, 키엔스 라벨, XGI 변수)는 격자에 자리가 없어 표에만 나옵니다
+  - 맵은 래더 위에 띄우므로 돌던 시뮬이 끊기지 않습니다
 
 ### 2026-11-19
 - **HMI 화면 만들기 (WinCC Unified)** — Siemens 를 고르고 헤더의 *HMI 화면 만들기* 에서 모델(Unified Comfort ·
