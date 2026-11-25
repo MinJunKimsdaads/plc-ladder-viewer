@@ -1,3 +1,13 @@
+# 공개 레포용 README 초안 (SEO 백링크)
+
+> 용도: GitHub **공개** 레포(예: `MinJunKimsdaads/plc-ladder-viewer`)의 README.md로 사용.
+> 비공개 레포는 구글에 색인되지 않으므로 반드시 공개 레포여야 백링크 효과가 있습니다.
+> 아래 구분선 이후 내용을 그대로 README.md로 복사하세요. 패치노트는 릴리스마다 추가.
+> 지원 범위 표(렌더/시뮬 열)는 demo/adminData.ts의 `sim` 플래그와 맞출 것 — 시뮬은 현재 Mitsubishi + LS XGK(베타).
+> 기능을 배포할 때 이 패치노트와 벤더 가이드(demo/public/guides/)를 같은 작업에서 고친다.
+
+---
+
 # Integration PLC Logic View — PLC Ladder Viewer & Simulator
 
 **🔗 Live: https://ladder-view-demo.vercel.app/**
@@ -84,6 +94,18 @@ TIA Openness XML, IL parser, instruction list, 미쓰비시 래더, 지멘스 �
 - [LS Electric 래더 뷰어 — XG5000 .pra / .pri](https://ladder-view-demo.vercel.app/guides/ls-electric-ladder-viewer.html)
 
 ## 패치노트 (Changelog)
+
+### 2026-11-25
+- **HMI 화면 만들기: SVG 위젯 놓기** — 도구 모음에 *위젯* 탭이 생겼습니다. `.svghmi` 파일을 올리거나 *SVG 위젯 만들기* 에서
+  만든 위젯을 가져와 화면에 놓습니다
+  - 놓은 위젯은 인터페이스 파라미터마다 값 또는 HMI 태그를 넣습니다(둘 다 적으면 태그). 이 편집기로 만든 위젯은 넣은 값대로
+    캔버스 미리보기가 바뀌고, 다른 도구로 만든 위젯은 상자로 그립니다
+  - 내보낸 화면 JSON 에 화면에 쓴 위젯 파일이 함께 들어갑니다. 화면에 놓인 위젯은 목록에서 지울 수 없습니다
+  - [PLC-Assistant TIA 애드인 0.3.1](https://github.com/MinJunKimsdaads/plc-assistant-tool-release/releases/tag/tia-addin-v0.3.1) 이 위젯 파일을 프로젝트의 `UserFiles\SVGControls\` 에 쓰고 위젯 항목을
+    만듭니다. 인터페이스 값은 TIA 의 타입(불 · 숫자 · 색 · 글자)으로 바꿔 넣습니다
+  - TIA 가 아직 모르는 위젯이면 그 항목만 빠지고, 도구 상자 › Dynamic widgets 에서 새로 고침한 뒤 다시 가져오라고 알려 줍니다
+  - TIA Portal V21 새 프로젝트에서 위젯 두 개(값 · 태그 연결)를 넣어 화면 컴파일 시 위젯 항목 에러 0 으로 확인했습니다.
+    편집기를 연 TIA 에서 새로 고침 없이 바로 되는지는 아직 확인 전입니다
 
 ### 2026-11-23
 - **주소 맵** — 래더 제목 줄 오른쪽 *주소 맵* 에서 엽니다. Mitsubishi · Keyence · Siemens · LS 모두 됩니다
